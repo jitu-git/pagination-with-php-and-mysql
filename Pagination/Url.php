@@ -41,6 +41,6 @@ class Url {
     }
 
     public static function activePage(){
-        return isset($_GET[self::$pageString]) ? $_GET[self::$pageString] : 1;
+        return isset($_GET[self::$pageString]) && $_GET[self::$pageString] != "" ? $_GET[self::$pageString] : 1;
     }
 }
