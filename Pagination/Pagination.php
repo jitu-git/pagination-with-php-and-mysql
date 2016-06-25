@@ -2,35 +2,40 @@
 namespace Pagination;
 
 use Pagination\Html as Html;
+use Pagination\Sql as Sql;
+use Pagination\Url as Url;
 
 class Pagination{
 
     public $pageString = "page";
 
-    public $total, $currentPage, $nextPage, $previousPage, $sqlString, $limit, $totalPage;
-
-    private $html;
+    public $total, $currentPage, $limit, $totalPage;
 
     public function __construct($limit){
-
-        $this->total = 50;
-        $this->limit = $limit;
-        $this->html = new Html();
-        $this->total_no_page();
-        $this->currentPage();
+        Sql::$limit = $this->limit = $limit;
     }
 
+    /**
+     * count total no. of pages
+     *
+     * @return float
+     */
     private function total_no_page(){
-        $this->totalPage = $this->total / $this->limit;
+        return $this->totalPage = $this->total() / $this->limit;
     }
 
-    public function number(){
 
+    public function total(){
+        return Sql::total();
     }
+
+    /**
+     * generate pagination links
+     */
 
     public function links(){
-        for($i = 1; $i <= $this->totalPage; $i++){
-            echo $this->html->generate_link($i);
+        for($i = 1; $i <= $this->total_no_page(); $i++){
+            echo Html::generate_link($i);
         }
     }
 
@@ -40,7 +45,7 @@ class Pagination{
      * @return string
      */
     public function first(){
-        return $this->html->generate_link(1,"First");
+        return Html::generate_link(1,"First");
     }
 
     /**
@@ -49,22 +54,32 @@ class Pagination{
      * @return string
      */
     public function last(){
-        return $this->html->generate_link($this->totalPage,"Last");
+        return Html::generate_link($this->totalPage,"Last");
     }
 
+    /**
+     * generate next page link
+     *
+     * @return bool|string
+     */
     public function next(){
-        return $this->currentPage < $this->totalPage ? $this->html->generate_link($this->currentPage()+1,"Next") : false;
+        return $this->currentPage < $this->totalPage ? Html::generate_link($this->currentPage()+1,"Next") : false;
     }
 
+    /**
+     * generate previous page link
+     *
+     * @return bool|string
+     */
     public function previous(){
-        return $this->currentPage > 1 ? $this->html->generate_link($this->currentPage()-1,"Previous") : false ;
+        return $this->currentPage > 1 ? Html::generate_link($this->currentPage()-1,"Previous") : false ;
     }
 
     /**
      * @return int
      */
     public function currentPage(){
-        return $this->currentPage = isset($_GET[$this->pageString]) ? $_GET[$this->pageString] : 1;
+        return $this->currentPage = Url::activePage();
     }
 
     /**
@@ -75,8 +90,12 @@ class Pagination{
         $this->pageString = isset($string) && !is_null($string) ? $string : $this->pageString;
     }
 
-    public function setSql(){
+    public function sql($query){
+        Sql::setSql($query);
+    }
 
+    public function results(){
+        return Sql::getResults();
     }
 
     /**
@@ -86,34 +105,7 @@ class Pagination{
      * @return null|string
      */
     public function url($url = null){
-        return !is_null($url) ? $url : $this->currentUrl();
-    }
-
-    /**
-     * @return string
-     */
-    private function currentUrl(){
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-        return $current_url = $protocol. $_SERVER["HTTP_HOST"]. $_SERVER["REQUEST_URI"];
-    }
-    /**
-     * set url of pages
-     *
-     * @param $page
-     * @return string
-     */
-    protected function _setUrl($page){
-        $check_page = parse_url($this->currentUrl());
-        if($check_page){
-            parse_str($check_page["query"],$pages);
-            if(array_key_exists($this->pageString,$pages)){
-                $pages[$this->pageString] = $page;
-            }
-            $query_string = http_build_query($pages);
-            return $check_page["scheme"]. "://". $check_page["host"]. $check_page["path"]. "?". $query_string;
-        }else{
-            return $this->currentUrl(). "?". $this->pageString. "=". $page;
-        }
+        return !is_null($url) ? $url : Url::currentUrl();
     }
 }
 ?>

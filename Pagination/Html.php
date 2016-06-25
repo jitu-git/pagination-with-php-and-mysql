@@ -2,22 +2,23 @@
 
 namespace Pagination;
 
-class Html extends Pagination{
+use Pagination\Url as Url;
+
+class Html{
     public function __construct(){
 
     }
-
     /**
      * @param int $page
      * @param string $title
      * @return string
      */
-    public  function generate_link($page = 0,$title = null){
+    public  static function generate_link($page = 0,$title = null){
         $title =  !is_null($title) ? $title : $page;
-        if($page == $this->currentPage()){
+        if($page == Url::activePage()){
             return $title;
         }
-        return '<a href="'. $this->_setUrl($page) .'">'. $title.'</a>';
+        return '<a href="'. Url::setUrl($page) .'">'. $title.'</a>';
     }
 }
 ?>
