@@ -73,9 +73,4 @@ class Sql {
     public static function total(){
         return mysql_num_rows(self::prepare_query());
     }
-
-    public function create_table(){
-        
-    }
-
-} 
+}

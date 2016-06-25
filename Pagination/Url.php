@@ -5,7 +5,8 @@ namespace Pagination;
 
 class Url {
 
-    protected static $pageString = "page", $url;
+    protected static $url;
+    public static $pageString = "page";
 
     /**
      * @return string
@@ -21,6 +22,9 @@ class Url {
      * @return string
      */
     public static function setUrl($page = 1){
+        if($page == Url::activePage()){
+            return "javascript:void(0)";
+        }
         $check_page = parse_url(self::currentUrl());
         if(isset($check_page["query"])){
             parse_str($check_page["query"],$pages);
