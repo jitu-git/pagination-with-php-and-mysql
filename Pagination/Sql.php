@@ -26,8 +26,8 @@ class Sql {
      * connect database
      */
     private static function connect_db(){
-        mysql_connect("localhost","root","");
-        mysql_select_db("test");
+        mysql_connect("minmarks.com.mysql","minmarks_com","sZi2hCWp");
+        mysql_select_db("minmarks_com");
     }
 
 
@@ -37,7 +37,7 @@ class Sql {
      * @param string $query
      * @return resource
      */
-    private function prepare_query($query = ""){
+    private static function prepare_query($query = ""){
         self::connect_db();
         $sql_query = isset($query) && $query != "" ? $query : self::$sqlString;
 
