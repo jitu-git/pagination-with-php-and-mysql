@@ -6,7 +6,7 @@ Download a fresh copy of pagination class and put Pagination folder in your proj
 Include autoload.php in your file.
 
     require_once __DIR__ . "../../Pagination/autoload.php"
-Thats it. Now create an object of pagination class.
+That's it. Now create an object of pagination class.
 
     $limit = 10;
     $pagination = new \Pagination\Pagination($limit);
@@ -27,3 +27,4 @@ There are so many other function for different links;
     echo "Total Result: ".$pagination->total();
 
 
+[Demo](http://minmarks.com/demo/pagination-with-php-and-mysql/)
