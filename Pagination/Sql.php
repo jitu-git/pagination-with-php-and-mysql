@@ -26,8 +26,8 @@ class Sql {
      * connect database
      */
     private static function connect_db(){
-        mysql_connect("minmarks.com.mysql","minmarks_com","sZi2hCWp");
-        mysql_select_db("minmarks_com");
+        mysql_connect("localhost","root","");
+        mysql_select_db("test");
     }
 
 
