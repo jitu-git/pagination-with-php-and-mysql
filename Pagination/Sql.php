@@ -24,12 +24,21 @@ class Sql {
     }
     /**
      * connect database
+     * @method connect_db
      */
     private static function connect_db(){
         mysql_connect("localhost","root","");
         mysql_select_db("test");
     }
 
+    /**
+     * close db connection
+     *
+     * @method close_db
+     */
+    private static function close_db(){
+        mysql_close();
+    }
 
     /**
      * prepare sql query
@@ -40,7 +49,6 @@ class Sql {
     private static function prepare_query($query = ""){
         self::connect_db();
         $sql_query = isset($query) && $query != "" ? $query : self::$sqlString;
-
         return mysql_query($sql_query);
     }
     /**
@@ -62,6 +70,7 @@ class Sql {
         while($results = mysql_fetch_assoc($sql)){
             $result[] = $results;
         }
+        self::close_db();
         return $result;
     }
 
