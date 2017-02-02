@@ -27,4 +27,4 @@ There are so many other function for different links;
     echo "Total Result: ".$pagination->total();
 
 
-[Demo](http://minmarks.com/demo/pagination-with-php-and-mysql/)
+[Demo](https://www.maxmarks.in/demo/pagination-with-php-and-mysql/)
